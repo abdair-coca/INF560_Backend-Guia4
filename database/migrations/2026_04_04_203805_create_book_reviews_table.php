@@ -11,8 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('_book_reviews', function (Blueprint $table) {
+        Schema::create('book_reviews', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('book_id')->constrained('books')->cascadeOnDelete();
+            $table->foreignId('member_id')->constrained('members')->cascadeOnDelete();
+
+            $table->unsignedTinyInteger('rating');
+            $table->text('comment')->nullable();
+
             $table->timestamps();
         });
     }
