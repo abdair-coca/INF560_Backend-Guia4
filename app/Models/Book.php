@@ -66,6 +66,14 @@ class Book extends Model
         }
     }
     /**
+     * Obtenemos el promedio de las resenas del libro
+     */
+    public function getAverageRatingAttribute()
+    {
+        return number_format($this->reviews()->avg('rating'), 2);
+    }
+
+    /**
      * Relación: un libro tiene muchos autores.
      */
     public function authors(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -94,5 +102,13 @@ class Book extends Model
     public function activeLoans(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Loan::class)->where('status', 'active');
+    }
+
+    /**
+     * Relacion: un libro tiene muchas resenas
+     */
+    public function reviews(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(BookReview::class);
     }
 }

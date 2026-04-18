@@ -66,4 +66,12 @@ class Loan extends Model
     {
         return $this->belongsTo(Book::class);
     }
+
+    /**
+     * Relacion: un prestamo puede tener muchas multas
+     */
+    public function fines(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Fine::class);
+    }
 }

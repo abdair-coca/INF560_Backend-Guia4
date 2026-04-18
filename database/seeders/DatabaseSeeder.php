@@ -7,7 +7,9 @@ use App\Models\Book;
 use App\Models\Loan;
 use App\Models\Member;
 use App\Models\User;
+use App\Models\Fine;
 use Illuminate\Database\Seeder;
+use App\Models\BookReview;
 
 class DatabaseSeeder extends Seeder
 {
@@ -43,10 +45,20 @@ class DatabaseSeeder extends Seeder
         // 7. Crear 20 préstamos
         $memberIds = $members->pluck('id');
         $bookIds = $books->pluck('id');
-        Loan::factory(20)->create([
+        $loans = Loan::factory(20)->create([
             'book_id' => fn() => $bookIds->random(),
             'member_id' => fn() => $memberIds->random(),
             'loaned_by' => fn() => $users->random()->id,
+        ]);
+        // 8. Crear multas para préstamos vencidos
+        $loans->where('status', 'overdue')->each(function ($loan) {
+            Fine::factory()->create([
+                'loan_id' => $loan->id,
+            ]);
+        });
+        //9. creamos 30 resenas asociados con miembros y libros existentes
+        $reviews = BookReview::factory(30)->create([
+            'rating' => fake()->numberBetween(1, 5),
         ]);
     }
 }

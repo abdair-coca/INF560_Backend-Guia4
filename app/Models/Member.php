@@ -9,17 +9,6 @@ use Ramsey\Uuid\Type\Integer;
 class Member extends Model
 {
     use HasFactory;
-    /**  $table->id();
-     *$table->foreignId('user_id')->unique()->constrained('users')->cascadeOnDelete();
-     *$table->string('member_code', 20)->unique();
-     *$table->string('phone', 20)->nullable();
-     *$table->text('address')->nullable();
-     *$table->enum('membership_type', ['standard', 'premium', 'student'])->default('standard');
-     *$table->date('membership_expires_at')->nullable();
-     *$table->unsignedTinyInteger('max_loans')->default(3);
-     *$table->boolean('is_active')->default(true);
-     *$table->timestamps();
-     */
     protected $fillable = [
         'user_id',
         'member_code',
@@ -80,5 +69,13 @@ class Member extends Model
     public function activeLoans(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Loan::class)->where('status', 'active');
+    }
+
+    /**
+     * Relacion: un miembro puede tener muchas resenas
+     */
+    public function bookReviews(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(BookReview::class);
     }
 }

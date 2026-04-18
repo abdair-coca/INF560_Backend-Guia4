@@ -18,7 +18,8 @@ return new class extends Migration
             $table->foreignId('member_id')->constrained('members')->cascadeOnDelete();
 
             $table->unsignedTinyInteger('rating');
-            $table->text('comment')->nullable();
+            $table->text('title');
+            $table->text('body');
 
             $table->timestamps();
         });
